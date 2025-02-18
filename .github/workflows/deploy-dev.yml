@@ -24,7 +24,7 @@ jobs:
 
       - name: Replace values in appsettings.json
         run : |
-          sed -i -e 's/CRON-URL/${{ vars.CRON_URL }}/g' appsettings.json
+          sed -i -e 's|CRON-URL|${{ vars.CRON_URL }}|g' appsettings.json
           sed -i -e 's/CRON-PASSWORD/${{ secrets.CRON_PASSWORD }}/g' appsettings.json
 
       - name: 'Az CLI login'
