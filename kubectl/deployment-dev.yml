@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: moodle-dev-cronjob
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: moodle-dev-cron
+            image: learninghubmoodlecrdev.azurecr.io/learninghubmoodleimage-cron:latest
+            imagePullPolicy: IfNotPresent
+            args: [ "dotnet", "Learninghub-Moodle-cron.dll"]
+          restartPolicy: OnFailure
