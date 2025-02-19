@@ -72,5 +72,5 @@ jobs:
           STORAGE_KEY=$(az storage account keys list --resource-group ${{ vars.AZURE_RESOURCE_GROUP_NAME }} --account-name ${{ vars.AZURE_STORAGE_ACCOUNT_NAME }} --query [0].value -o tsv)
           echo "storage_key=$STORAGE_KEY" >> $GITHUB_OUTPUT
 
-      # - name: Deploy cronjob to AKS cluster
-      #   run: kubectl apply -f kubectl/deployment-dev.yml
+      - name: Deploy cronjob to AKS cluster
+        run: kubectl apply -f kubectl/deployment-dev.yml
