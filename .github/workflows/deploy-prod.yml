@@ -1,8 +1,11 @@
 name: Deploy LearningHub-Moodle to Prod
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Are you sure you want to proceed? Type "yes" to confirm.'
+        required: true
+        default: 'no'
   
 permissions:
   id-token: write
