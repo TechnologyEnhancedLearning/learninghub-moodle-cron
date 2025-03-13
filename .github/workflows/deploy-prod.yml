@@ -8,9 +8,7 @@ on:
         default: 'no'
       environment:
         description: 'Which environment do you want to deploy to?'
-        options:
-        - prod
-        - pgvle
+        type: environment
 
 permissions:
   id-token: write
