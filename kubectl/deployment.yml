@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: moodle-ENVIRONMENT-cronjob
+  namespace: learninghubmoodle
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: moodle-ENVIRONMENT-cron
+            image: learninghubmoodlecrENVIRONMENT.azurecr.io/learninghubmoodlecronimage:latest
+            imagePullPolicy: IfNotPresent
+            args: [ "dotnet", "Learninghub-Moodle-cron.dll"]
+            resources:
+              requests:
+                cpu: "100m"
+                memory: "128Mi"
+              limits:
+                cpu: "200m"
+                memory: "256Mi"
+          restartPolicy: OnFailure
