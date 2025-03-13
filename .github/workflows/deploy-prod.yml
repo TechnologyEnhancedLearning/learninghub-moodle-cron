@@ -90,5 +90,9 @@ jobs:
           STORAGE_KEY=$(az storage account keys list --resource-group ${{ vars.AZURE_RESOURCE_GROUP_NAME }} --account-name ${{ vars.AZURE_STORAGE_ACCOUNT_NAME }} --query [0].value -o tsv)
           echo "storage_key=$STORAGE_KEY" >> $GITHUB_OUTPUT
 
+      - name: Replace values in deployment.yml
+        run : |
+          sed -i -e 's/ENVIRONMENT/${{ github.event.inputs.environment }}/g' kubectl/deployment.yml
+
       - name: Deploy cronjob to AKS cluster
-        run: kubectl apply -f kubectl/deployment-prod.yml
+        run: kubectl apply -f kubectl/deployment.yml
