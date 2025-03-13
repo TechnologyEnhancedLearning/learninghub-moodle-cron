@@ -1,17 +1,37 @@
-name: Deploy LearningHub-Moodle to Dev
+name: Deploy LearningHub-Moodle to Prod
 on:
-  push:
-    branches:
-      - CI
-  
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Are you sure you want to proceed? Type "yes" to confirm.'
+        required: true
+        default: 'no'
+      environment:
+        description: 'Which environment do you want to deploy to?'
+        options:
+        - prod
+        - pgvle
+
 permissions:
   id-token: write
   contents: read
 
 jobs:
+  confirm-job:
+    runs-on: ubuntu-latest
+    environment: ProdApproval
+    steps:
+      - name: Check confirmation
+        run: |
+          if [ "${{ github.event.inputs.confirm }}" != "yes" ]; then
+            echo "Confirmation failed. Exiting workflow."
+            exit 1
+          fi
+          echo "Confirmation successful. Proceeding..."
+
   build_and_push_docker_image:
     runs-on: ubuntu-latest
-    environment: dev
+    environment: ${{ github.event.inputs.environment }}
     name: Build and push learninghub moodle cron docker image
     env:
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
@@ -45,7 +65,7 @@ jobs:
   deploy_learninghubmoodlecron_to_cluster:
     needs: build_and_push_docker_image
     runs-on: ubuntu-latest
-    environment: dev
+    environment: ${{ github.event.inputs.environment }}
     name: 'Deploy learninghub moodle cron to AKS cluster'
     env:
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
@@ -73,4 +93,4 @@ jobs:
           echo "storage_key=$STORAGE_KEY" >> $GITHUB_OUTPUT
 
       - name: Deploy cronjob to AKS cluster
-        run: kubectl apply -f kubectl/deployment-dev.yml
+        run: kubectl apply -f kubectl/deployment-prod.yml

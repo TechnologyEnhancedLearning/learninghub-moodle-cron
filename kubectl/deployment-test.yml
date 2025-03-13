@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: moodle-dev-cronjob
+  name: moodle-test-cronjob
   namespace: learninghubmoodle
 spec:
   schedule: "*/1 * * * *"
@@ -10,8 +10,8 @@ spec:
       template:
         spec:
           containers:
-          - name: moodle-dev-cron
-            image: learninghubmoodlecrdev.azurecr.io/learninghubmoodlecronimage:latest
+          - name: moodle-test-cron
+            image: learninghubmoodlecrtest.azurecr.io/learninghubmoodlecronimage:latest
             imagePullPolicy: IfNotPresent
             args: [ "dotnet", "Learninghub-Moodle-cron.dll"]
             resources:
