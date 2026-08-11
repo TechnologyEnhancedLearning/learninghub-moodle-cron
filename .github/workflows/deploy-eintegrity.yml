@@ -11,7 +11,7 @@ permissions:
 jobs:
   build_and_push_docker_image:
     runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.environment }}
+    environment: eintegrity
     name: Build and push learninghub moodle cron docker image
     env:
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
@@ -45,7 +45,7 @@ jobs:
   deploy_learninghubmoodlecron_to_cluster:
     needs: build_and_push_docker_image
     runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.environment }}
+    environment: eintegrity
     name: 'Deploy learninghub moodle cron to AKS cluster'
     env:
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
@@ -74,7 +74,7 @@ jobs:
 
       - name: Replace values in deployment.yml
         run : |
-          sed -i -e 's/ENVIRONMENT/${{ github.event.inputs.environment }}/g' kubectl/deployment.yml
+          sed -i -e 's/ENVIRONMENT/eintegrity/g' kubectl/deployment.yml
 
       - name: Deploy cronjob to AKS cluster
         run: kubectl apply -f kubectl/deployment.yml
