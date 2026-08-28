@@ -12,7 +12,7 @@ spec:
           containers:
           - name: moodle-dev-cron
             image: learninghubmoodlecrdev.azurecr.io/learninghubmoodlecronimage:latest
-            imagePullPolicy: IfNotPresent
+            imagePullPolicy: Always
             args: [ "dotnet", "Learninghub-Moodle-cron.dll"]
             resources:
               requests:
